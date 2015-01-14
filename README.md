@@ -1,240 +1,249 @@
-/**
- * Copyright (c) 2011, 2014 Juho Nurminen
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event will the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Permission is granted to anyone to use this software for any purpose,
- * including commercial applications, and to alter it and redistribute it
- * freely, subject to the following restrictions:
- *
- *    1. The origin of this software must not be misrepresented; you must not
- *    claim that you wrote the original software. If you use this software
- *    in a product, an acknowledgment in the product documentation would be
- *    appreciated but is not required.
- *
- *    2. Altered source versions must be plainly marked as such, and must not be
- *    misrepresented as being the original software.
- *
- *    3. This notice may not be removed or altered from any source
- *    distribution.
- */
 
-(function () {
+<html>
 
-    var i, j, script,
-        open = XMLHttpRequest.prototype.open,
-        setRequestHeader = XMLHttpRequest.prototype.setRequestHeader,
-        send = XMLHttpRequest.prototype.send,
-        submit = HTMLFormElement.prototype.submit,
-        button,
-        formCatcher,
+<head>
+<title>Password Protecting your web site</title>
+</head>
 
-        // boudary creator for multipart/form-data
-        getBoundary = function (data) {
-                var i,
-                    chars = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
-                    boundary = '----WebKitFormBoundary';
+<body bgcolor="#FFFFFF">
 
-                for (i = 0; i < 16; i++) {
-                    boundary += chars[Math.floor(Math.random()*62)];
-                }
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td onmouseover="window.status='KxS&#153; Inc. Home Page'; return true" onmouseout="window.status=' '; return true">
+    <img border="0" src="../images/kxsinc.gif" width="225" height="54"></td>
+    <td onmouseover="window.status='KxS&#153; Inc. Home Page'; return true" onmouseout="window.status=' '; return true"><p align="right"><a href="/index.html">
+    <img src="/images/vwh.gif" alt="Virtual Web Hosting" border="0" width="311" height="54"></a></td>
+  </tr>
+</table>
 
-                for (i = 0; i < data.length; i++) {
-                    if (data[i][0].match(boundary) || data[i][1].match(boundary)) {
-                        boundary = getBoundary(data);
-                        break;
-                    }
-                }
+<table WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0" BGCOLOR="#008080">
+  <tr>
+    <td VALIGN="TOP"><a href="/about.html"><font FACE="Arial, Helvetica" Size="1" onmouseover="window.status='About KxS&#153; Inc.'; return true" onmouseout="window.status=' '; return true">
+    <img src="/images/about.gif" BORDER="0" alt="About KxS Inc." width="70" height="20"></font></a></td>
+    <td VALIGN="TOP" onmouseover="window.status='Virtual Web Hosting Information'; return true" onmouseout="window.status=' '; return true"><a href="/vhp.html">
+    <img src="/images/host.gif" BORDER="0" alt="Virtual Web Hosting" width="140" height="20"></a></td>
+    <td VALIGN="TOP" onmouseover="window.status='Customer Support'; return true" onmouseout="window.status=' '; return true"><a href="support.html">
+    <img src="/images/support.gif" BORDER="0" alt="KxS Support" width="90" height="20"></a></td>
+    <td VALIGN="TOP" onmouseover="window.status='Sign up today!'; return true" onmouseout="window.status=' '; return true"><a href="/signup.html">
+    <img src="/images/sgnup.gif" BORDER="0" alt="Sign-Up Now" width="90" height="20"></a></td>
+  </tr>
+</table>
 
-                return boundary;
-            },
+<table border="0" width="100%">
+  <tr>
+    <td width="12%"></td>
+    <td width="75%" valign="middle"><p align="center">&nbsp;</p>
+    <p align="center"><font size="4" color="#008080"><strong>Limiting web access using
+    passwords.</strong></font></p>
+    <font SIZE="2"><p>Although you cannot password protect a single document, you can require
+    a userid and password to access a directory. Thus any and all documents stored in that
+    directory cannot be view without entering the proper userid and password. For example, you
+    create a directory called &quot;private&quot; that you want to restrict access so that
+    only a select few friends or customers could see the file(s) in it.</p>
+    <p>This involves the creation of 3 different text files. Below are some examples of what
+    they may look like.</p>
+    <table border="3" width="100%">
+      <tr>
+        <td width="100%"><strong>NOTE: </strong>The term domain as used in this document is
+        referring to the beginning part of your domain name. Example: Let's assume your web site
+        is &quot;www.kxs.com&quot;, your domain name is &quot;kxs.com&quot; - when we refer to
+        domain, we are looking at the &quot;kxs&quot; portion.<p>Throughout this document we will
+        make use of Quotes &quot;&quot; to emphasize important items. Do NOT use Quotes as part of
+        document or directory names.&nbsp; <strong>The period before the file name, however, is
+        important.</strong></font><p><span lang="en-us">You must use full 
+        pathnames for all the files.&nbsp; Example: /files9/kxs/web_access/.htpasswd.kxs</span></td>
+      </tr>
+    </table>
+    <p align="center"><font size="3"><strong>The .htaccess file</strong></font></p>
+    <table border="0" width="100%" bgcolor="#CAFFFF">
+      <tr>
+        <td width="50%">&nbsp;</td>
+        <td width="50%"><font SIZE="2"><strong>Using our example of &quot;kxs&quot;</strong></font></td>
+      </tr>
+      <tr>
+        <td width="50%"><strong><font SIZE="2">[filename: .htaccess]</font></strong></td>
+        <td width="50%"><strong><font SIZE="2">[filename: .htaccess]</font></strong></td>
+      </tr>
+      <tr>
+        <td width="50%">&nbsp;</td>
+        <td width="50%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">AuthUserFile /not-www/.htpasswd.domain</font></td>
+        <td width="50%"><font SIZE="2">AuthUserFile /web_access/.htpasswd.kxs</font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">AuthGroupFile /not-www/.htgroup.domain</font></td>
+        <td width="50%"><font SIZE="2">AuthGroupFile /web_access/.htgroup.kxs</font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">AuthName ByPassword</font></td>
+        <td width="50%"><font SIZE="2">AuthName ByPassword</font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">AuthType Basic</font></td>
+        <td width="50%"><font SIZE="2">AuthType Basic</font></td>
+      </tr>
+      <tr>
+        <td width="50%">&nbsp;</td>
+        <td width="50%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">&lt;Limit GET&gt;</font></td>
+        <td width="50%"><font SIZE="2">&lt;Limit GET&gt;</font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">require group users</font></td>
+        <td width="50%"><font SIZE="2">require group users</font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">&lt;/Limit&gt;</font></td>
+        <td width="50%"><font SIZE="2">&lt;/Limit&gt;</font></td>
+      </tr>
+    </table>
+    <font SIZE="2"><p>&nbsp;</p>
+    </font><p align="center"><font size="3"><strong>The .htgroup file</strong></font></p>
+    <font SIZE="2"><table border="0" width="100%" bgcolor="#CAFFFF">
+      <tr>
+        <td width="50%">&nbsp;</td>
+        </font><td width="50%"><font SIZE="2"><strong>Using our example of &quot;kxs&quot;</strong></font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2"><strong>[filename: .htgroup.domain]</strong></font></td>
+        <td width="50%"><font SIZE="2"><strong>[filename: .htgroup.kxs]</strong></font></td>
+      </tr>
+      <tr>
+        <td width="50%">&nbsp;</td>
+        <td width="50%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">users: johnsmith suzieq bob</font></td>
+        <td width="50%"><font SIZE="2">users: johnsmith suzieq bob</font></td>
+      </tr>
+    </table>
+    <font SIZE="2"><p>&nbsp;</p>
+    </font><p align="center"><font size="3"><strong>The .htpasswd file</strong></font></p>
+    <font SIZE="2"><table border="0" width="100%" bgcolor="#CAFFFF">
+      <tr>
+        <td width="50%">&nbsp;</td>
+        </font><td width="50%"><font SIZE="2"><strong>Using our example of &quot;kxs&quot;</strong></font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">[filename: .htpasswd.domain]</font></td>
+        <td width="50%"><font SIZE="2">[filename: .htpasswd.kxs]</font></td>
+      </tr>
+      <tr>
+        <td width="50%">&nbsp;</td>
+        <td width="50%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">johnsmith:hgcrBSZ7XJ6hq</font></td>
+        <td width="50%"><font SIZE="2">johnsmith:hgcrBSZ7XJ6hq</font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">suzieq:NBc.2KG03ocf.</font></td>
+        <td width="50%"><font SIZE="2">suzieq:NBc.2KG03ocf.</font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">bob:zEX78QaIqNuee</font></td>
+        <td width="50%"><font SIZE="2">bob:zEX78QaIqNuee</font></td>
+      </tr>
+    </table>
+    <font SIZE="2"><p>The file .htaccess goes into the directory that you want to password
+    protect. So, if I wanted to protect: </p>
+    <table border="0" width="100%" bgcolor="#CAFFFF">
+      <tr>
+        <td width="50%">&nbsp;</td>
+        </font><td width="50%"><font SIZE="2"><strong>Using our example of &quot;kxs&quot;</strong></font></td>
+      </tr>
+      <tr>
+        <td width="50%">&nbsp;</td>
+        <td width="50%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">http://www.yourdomian.com/private/</font></td>
+        <td width="50%"><font SIZE="2">http://www.kxs.com/private/</font></td>
+      </tr>
+    </table>
+    <font SIZE="2"><p>then you would put the .htaccess file in &nbsp;&nbsp;
+    /www/private/.htaccess</p>
+    <p>Make sure that the .htgroup.domain and .htpasswd.domain files are not accessible to the
+    rest of the internet by placing them in a directory outside of your web space ( /not-www
+    ).</p>
+    <p>When you login to your account, you will see several directories. One of them is called
+    &quot;www&quot;. Anything placed into &quot;www&quot; will be immediately available on the
+    web. So before going into &quot;www&quot;, make a new directory and call it
+    &quot;web_access&quot;. Now when you login, you should see &quot;www&quot; and
+    &quot;web_access&quot; at the same level. Anything you put into &quot;web_access&quot;
+    will NOT be available to the internet. This is where you should put the .htgroup and
+    .htpasswd files.</p>
+    </font><p align="center"><font size="3"><strong>The directory structure may look something
+    like this:</strong></font></p>
+    <font SIZE="2"><table border="0" width="100%" bgcolor="#CAFFFF">
+      <tr>
+        <td width="50%">&nbsp;</td>
+        </font><td width="50%"><font SIZE="2"><strong>Using our example of &quot;kxs&quot;</strong></font></td>
+      </tr>
+      <font SIZE="2">
+      <tr>
+        <td width="50%">&nbsp;</td>
+        <td width="50%">&nbsp;</td>
+      </tr>
+      </font>
+      <tr>
+        <td width="50%"><font SIZE="2">/not-www/.htgroup.domian</font></td>
+        <td width="50%"><font SIZE="2">/web_access/.htgroup.kxs</font></td>
+      </tr>
+      <tr>
+        <td width="50%"><font SIZE="2">/not-www/.htpasswd.domain</font></td>
+        <td width="50%"><font SIZE="2">/web_access/.htpasswd.kxs</font></td>
+      </tr>
+    </table>
+    <font SIZE="2"><p>Put a list of all the usernames that you want to be able to access the
+    site in the .htgroup.domain file. This is a whitespace-separated list of usernames who are
+    in the group 'users' (this is what we put in the .htaccess file where we required a person
+    to be in the group 'users' in order to access the site).</p>
+    <p>Then, the last thing we need to do is put the users and their encrypted passwords in
+    the .htpasswd.domain file. We have created a web page that allows you to <a href="htaccess_pw.html">encrypt your passwords</a>. Once encrypted, all you need to do is
+    to cut and paste the information into your .htpassword file and upload it to your site.
+    &nbsp; <strong>Be sure to upload the file as &quot;text&quot;.</strong></p>
+    <p><span lang="en-us"><strong>This information is provided for use by KxS® 
+    customers.&nbsp; Although this page is available for viewing by the general 
+    public, we can only provide support for KxS® customers.</strong></span></font></p>
+    <p><font SIZE="2"><strong>&nbsp;</strong></font></td>
+    <td width="13%"></td>
+  </tr>
+</table>
 
-        array = function () { // JSON fix
-                var a = window.Array.apply(window, arguments);
-                a.toJSON = undefined;
-                return a;
-            },
+<table border="0" width="100%">
+  <tr>
+    <td width="33%"><p align="right" onmouseover="window.status='Virtual Web Hosting Information'; return true" onmouseout="window.status=' '; return true"><a href="/vhp.html">
+    <img border="0" src="/images/vhp.gif" alt="Virtual Hosting Information" width="193" height="78"></a></td>
+    <td width="33%" onmouseover="window.status='Save on Energy!'; return true" onmouseout="window.status=' '; return true"><p align="center">
+    <a href="http://www.kalan.net/Kens_Web/Energy.html"><img border="0" src="../images/ENERGY_IMAGE.jpg" width="259" height="142"></a></td>
+    <td width="34%"><p align="left" onmouseover="window.status='Sign up today!'; return true" onmouseout="window.status=' '; return true"><a href="/signup.html">
+    <img src="/images/sgnup2.gif" alt="Sign Up Today!!!" border="0" width="129" height="77"></a></td>
+  </tr>
+</table>
 
-        serializeForm = function (form) {
-                var url = form.getAttribute('action') || '',
-                    method = form.getAttribute('method') && form.getAttribute('method').toUpperCase() == 'POST' ? 'POST' : 'GET',
-                    data = array(),
-                    multipart = form.getAttribute('enctype') &&
-                                form.getAttribute('enctype').substr(0, 19).toLowerCase() == 'multipart/form-data'
-                                ? true : false;
+<table border="0" width="100%">
+  <tr>
+    <td width="69%"><p align="center"><small><small>Copyright</small> 
+      <small>© <span lang="en-us">2010</span> KxS<sup><span lang="en-us"><strong>®</strong></span></sup> Inc. &nbsp; All rights reserved.<br>
+      </small></small></td>
+    <td width="31%" height="13" align="right">
+    <img src="../images/877-5.gif" alt="Call us Toll Free at 1-877-KXS-HOST or in Chicagoland at 1-847-328-2134" width="246" height="50"></td>
+  </tr>
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-16106839-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
 
-                // parse the data
-                for (i = 0; i < form.length; i++) {
-                    if (form[i].name && form[i].getAttribute('disabled') === null) {
-                        if (multipart && method == 'POST' && form[i].nodeName == 'INPUT' && form[i].type.toUpperCase() == 'FILE' && form[i].files.length) {
-                            for (j = 0; j < form[i].files.length; j++) {
-                                data.push(
-                                        'Content-Disposition: form-data; name="' + encodeURIComponent(form[i].name) + '"; ' +
-                                            'filename="' + encodeURIComponent(form[i].files[j].name) + '"\n' +
-                                        'Content-Type: ' + (form[i].files[j].type || 'text/plain') + '\n\n' +
-                                        '[File contents not captured]'
-                                    );
-                            }
-                        } else if (
-                                (form[i].nodeName == 'INPUT' &&
-                                    (form[i].type.toUpperCase() == 'RADIO' || form[i].type.toUpperCase() == 'CHECKBOX' ? form[i].checked : true) &&
-                                    (form[i].type.toUpperCase() == 'SUBMIT' ? form[i].isSameNode(button) : true)) ||
-                                form[i].nodeName == 'SELECT' ||
-                                form[i].nodeName == 'BUTTON' ||
-                                form[i].nodeName == 'TEXTAREA'
-                            ) {
-                            data.push(array(form[i].name, form[i].value));
-                        }
-                    }
-                }
-
-                // append GET data to the URL
-                if (method == 'GET') {
-                    if (url.indexOf('#') != -1) {
-                        url = url.substr(0, url.indexOf('#'));
-                    }
-                    if (url.indexOf('?') != -1 && url.charAt(url.length-1) != '&') {
-                        url += '&';
-                    } else {
-                        url += '?';
-                    }
-
-                    for (i = 0; i < data.length; i++) {
-                        url += (i ? '&' : '' ) + encodeURIComponent(data[i][0]) + '=' + encodeURIComponent(data[i][1]);
-                    }
-
-                    data = array(); // clear data
-                }
-
-                return {
-                    'type': 'Form',
-                    'method': method,
-                    'url': url,
-                    'headers': method == 'POST' ? array(array(
-                            'Content-Type',
-                            multipart ? 'multipart/form-data; boundary=' + getBoundary(data) : 'application/x-www-form-urlencoded'
-                        )) : array(),
-                    'data': data
-                };
-            };
-
-    // get this script element
-    for (i = 0; i < document.scripts.length; i++) {
-        if (document.scripts[i].src == 'chrome-extension://kajfghlhfkcocafkcjlajldicbikpgnp/catcher.js' ||
-            (document.scripts[i].src == 'chrome-extension://miohkmcmoaamplodlpepandpocgajcdj/catcher.js')) {
-            script = document.scripts[i];
-        }
-    }
-    if (!script) {
-        return;
-    }
-
-    // clean up on node remove
-    document.documentElement.addEventListener('DOMNodeRemoved', function (event) {
-            if (event.target.isSameNode(script)) {
-                XMLHttpRequest.prototype.open = open;
-                XMLHttpRequest.prototype.setRequestHeader = setRequestHeader;
-                XMLHttpRequest.prototype.send = send;
-                window.removeEventListener('submit', formCatcher, true);
-                HTMLFormElement.prototype.submit = submit;
-                document.documentElement.removeEventListener('DOMNodeRemoved', arguments.callee);
-            }
-        });
-
-    // Catch XHR
-    XMLHttpRequest.prototype.open = function (method, url) {
-            open.apply(this, arguments);
-
-            this['kajfghlhfkcocafkcjlajldicbikpgnp'] = {
-                'type': 'XHR',
-                'method': method.toUpperCase(),
-                'url': url.toString()
-            };
-        };
-
-    XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
-            setRequestHeader.apply(this, arguments);
-
-            header = header === null || header === undefined ? header : header.toString();
-            value = value === null || value === undefined ? value : value.toString();
-
-            if (!('headers' in this['kajfghlhfkcocafkcjlajldicbikpgnp'])) {
-                this['kajfghlhfkcocafkcjlajldicbikpgnp'].headers = array();
-            }
-
-            if (!( // Check for 'unsafe' headers
-                    header.match(/^Accept-Charset$/i) ||
-                    header.match(/^Accept-Encoding$/i) ||
-                    header.match(/^Connection$/i) ||
-                    header.match(/^Content-Length$/i) ||
-                    header.match(/^Cookie$/i) ||
-                    header.match(/^Cookie2$/i) ||
-                    header.match(/^Content-Transfer-Encoding$/i) ||
-                    header.match(/^Date$/i) ||
-                    header.match(/^Expect$/i) ||
-                    header.match(/^Host$/i) ||
-                    header.match(/^Keep-Alive$/i) ||
-                    header.match(/^Referer$/i) ||
-                    header.match(/^TE$/i) ||
-                    header.match(/^Trailer$/i) ||
-                    header.match(/^Transfer-Encoding$/i) ||
-                    header.match(/^Upgrade$/i) ||
-                    header.match(/^User-Agent$/i) ||
-                    header.match(/^Via$/i) ||
-                    header.match(/^Proxy-/i) ||
-                    header.match(/^Sec-/i) ||
-                    header.match(/^Origin$/i)
-                )) {
-                this['kajfghlhfkcocafkcjlajldicbikpgnp'].headers.push(array(header, value));
-            }
-        };
-
-    XMLHttpRequest.prototype.send = function (data) {
-            var event = document.createEvent('CustomEvent');
-
-            send.apply(this, arguments);
-
-            if (data === null || data === undefined) {
-                this['kajfghlhfkcocafkcjlajldicbikpgnp'].data = array();
-            } else if (data instanceof FormData) {
-                this['kajfghlhfkcocafkcjlajldicbikpgnp'].data = array('[Unable to capture XHR Level 2 FormData]');
-            } else {
-                this['kajfghlhfkcocafkcjlajldicbikpgnp'].data = array(data.toString());
-            }
-
-            event.initCustomEvent('kajfghlhfkcocafkcjlajldicbikpgnp', false, false, this['kajfghlhfkcocafkcjlajldicbikpgnp']);
-            script.dispatchEvent(event);
-            delete this['kajfghlhfkcocafkcjlajldicbikpgnp'];
-        };
-
-    // Catch form submissions
-    window.addEventListener('click', function (event) {
-            if (
-                    (event.target.nodeName == 'INPUT' && event.target.type && event.target.type.toUpperCase() == 'SUBMIT') ||
-                    (event.target.nodeName == 'BUTTON' && (!event.target.type || (event.target.type.toUpperCase() != 'BUTTON' && event.target.type.toUpperCase() != 'RESET')))
-                ) {
-                // remember a click on a submit button
-                button = event.target;
-                // queue an asychronous function
-                setTimeout(function () {
-                        // forget the click
-                        delete button;
-                    }, 0);
-            }
-        }, true);
-
-    window.addEventListener('submit', formCatcher = function (event) {
-            var result = document.createEvent('CustomEvent');
-
-            result.initCustomEvent('kajfghlhfkcocafkcjlajldicbikpgnp', false, false, serializeForm(event.target));
-            script.dispatchEvent(result);
-        }, true);
-
-    HTMLFormElement.prototype.submit = function () {
-            submit.apply(this, arguments);
-            formCatcher({'target': this});
-        };
-
-})();
+</body>
+</html>
